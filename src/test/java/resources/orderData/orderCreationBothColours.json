@@ -1,0 +1,14 @@
+{
+  "firstName": "Petr",
+  "lastName": "Petrov",
+  "address": "Benua, 22",
+  "metroStation": 4,
+  "phone": "8 800 555 35 35",
+  "rentTime": 5,
+  "deliveryDate": "2022-06-06",
+  "comment": "Call me near lift zone",
+  "color": [
+    "BLACK",
+    "GREY"
+  ]
+}

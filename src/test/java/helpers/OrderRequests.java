@@ -1,29 +1,30 @@
 package helpers;
 
+import com.google.gson.Gson;
 import io.restassured.response.Response;
+import models.Order;
 
 import java.io.File;
 
 import static io.restassured.RestAssured.given;
 
 public class OrderRequests extends BaseUriRequest {
-    Integer orderId = null;
     private final static String API_ORDERS = "/api/v1/orders";
+    private final static Gson gson = new Gson();
 
-    public Response createOrder(File file) {
+    public Response createOrder(Order order) {
         Response response =
                 given()
                         .spec(getRequestSpecification())
                         .header("Content-type", "application/json")
                         .and()
-                        .body(file)
+                        .body(gson.toJson(order))
                         .when()
                         .post(API_ORDERS);
-        saveOrderId(response);
         return response;
     }
 
-    public void cancelOrder() {
+    public void cancelOrder(Integer orderId) {
         if (!(orderId == null)) {
             given()
                     .spec(getRequestSpecification())
@@ -38,13 +39,5 @@ public class OrderRequests extends BaseUriRequest {
                 given()
                         .spec(getRequestSpecification())
                         .get(API_ORDERS);
-    }
-
-    public void saveOrderId(Response response) {
-        orderId = response.then().extract().body().path("track");
-    }
-
-    public void deleteOrderId() {
-        orderId = null;
     }
 }

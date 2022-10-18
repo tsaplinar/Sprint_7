@@ -2,8 +2,8 @@ package helpers;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-
-import java.io.File;
+import models.Courier;
+import models.Order;
 
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,33 +14,29 @@ public class Steps {
     OrderRequests orderRequests = new OrderRequests();
 
     @Step("New courier creation")
-    public Response createCourier(File file) {
-        return courierRequests.createCourier(file);
+    public Response createCourier(Courier courier) {
+        return courierRequests.createCourier(courier);
     }
 
     @Step("Clear test data")
-    public void clearTestData(File file) {
-        courierRequests.deleteTestData(file);
+    public void clearCourierTestData(Courier courier) {
+        courierRequests.deleteCourierTestData(courier);
     }
 
+
     @Step("Courier login")
-    public Response courierLogin(File file) {
-        return courierRequests.loginCourier(file);
+    public Response courierLogin(Courier courier) {
+        return courierRequests.loginCourier(courier);
     }
 
     @Step("Create new order")
-    public Response createOrder(File file) {
-        return orderRequests.createOrder(file);
-    }
-
-    @Step("Delete order ID")
-    public void deleteOrderId() {
-        orderRequests.deleteOrderId();
+    public Response createOrder(Order order) {
+        return orderRequests.createOrder(order);
     }
 
     @Step("Cancel Order")
-    public void cancelOrder() {
-        orderRequests.cancelOrder();
+    public void cancelOrder(Integer orderId) {
+        orderRequests.cancelOrder(orderId);
     }
 
     @Step("Get order list")
@@ -92,14 +88,15 @@ public class Steps {
     }
 
     @Step("Order creation response check")
-    public void orderCreationResponseCheck(Response response) {
+    public Integer orderCreationResponseCheck(Response response) {
         response.then().assertThat().body("track", notNullValue())
                 .and()
                 .statusCode(SC_CREATED);
+        return response.then().extract().body().path("track");
     }
 
-    @Step("Get order list response ckeck")
-    public void getOrderlistResponseCheck(Response response) {
+    @Step("Get order list response check")
+    public void getOrderListResponseCheck(Response response) {
         response.then().assertThat().body("orders[0]", notNullValue())
                 .and()
                 .statusCode(SC_OK);

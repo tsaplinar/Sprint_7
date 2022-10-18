@@ -1,6 +1,8 @@
 package helpers;
 
+import com.google.gson.Gson;
 import io.restassured.response.Response;
+import resources.models.Courier;
 
 import java.io.File;
 
@@ -8,14 +10,16 @@ import static io.restassured.RestAssured.given;
 
 public class CourierRequests extends BaseUriRequest {
     private final static String API_COURIER = "/api/v1/courier/";
+    Gson gson = new Gson();
+    String json = gson.toJson();
 
-    public Response createCourier(File file) {
+    public Response createCourier(String json) {
         return
                 given()
                         .spec(getRequestSpecification())
                         .header("Content-type", "application/json")
                         .and()
-                        .body(file)
+                        .body(json)
                         .when()
                         .post(API_COURIER);
     }

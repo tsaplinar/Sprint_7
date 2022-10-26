@@ -15,25 +15,13 @@ public class OrderGenerator {
                 20,
                 "2022-02-22",
                 "Comment for test",
-                new ArrayList<>()
+                null
         );
     }
     public static Order createBlackOrder() {
         Order order = createOrderWithoutColors();
+        order.setColor(new ArrayList<>());
         order.addColor("BLACK");
-        return order;
-    }
-
-    public static Order createGreyOrder() {
-        Order order = createOrderWithoutColors();
-        order.addColor("GREY");
-        return order;
-    }
-
-    public static Order createBothColorOrder() {
-        Order order = createOrderWithoutColors();
-        order.addColor("GREY");
-        order.addColor("Black");
         return order;
     }
 }
